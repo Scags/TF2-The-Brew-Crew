@@ -1,0 +1,351 @@
+"Games"
+{
+	/* Team Fortress 2 */
+	"tf"
+	{
+		"Functions"
+		{
+			"CTFFlameThrower::ComputeCrayAirBlastForce"
+			{
+				"signature" 	"CTFFlameThrower::ComputeCrayAirBlastForce"
+				"callconv" 		"thiscall"
+				"return" 		"vectorptr"
+				"this" 			"address"
+				"arguments"
+				{
+					"pAirblasted"
+					{
+						"type" 	"cbaseentity"
+					}
+					"pAirblaster"
+					{
+						"type" 	"cbaseentity"
+					}
+					"vecAng"
+					{
+						"type" 	"vectorptr"
+					}
+					"vecImpulse"
+					{
+						"type" 	"vectorptr"
+					}
+				}
+			}
+			"CTFPlayer::ApplyAbsVelocityImpulse"
+			{
+				"signature" 	"CTFPlayer::ApplyAbsVelocityImpulse"
+				"callconv" 		"thiscall"
+				"return" 		"void"
+				"this" 			"entity"
+				"arguments"
+				{
+					"vecImpulse"
+					{
+						"type" 	"vectorptr"
+					}
+				}
+			}
+			"CEconItemView::IterateAttributes"
+			{
+				"offset"	"CEconItemView::IterateAttributes"
+				"hooktype"	"raw"
+				"return"	"void"
+				"this"		"address"
+				"arguments"
+				{
+					"IEconItemAttributeIterator"
+					{
+						"type"	"objectptr"
+					}
+				}
+			}
+		}
+		"Offsets"
+		{
+			"CBasePlayer::Jump"
+			{
+				"windows"		"338"
+				"linux" 		"339"
+			}
+			"CBaseObject::MakeCarriedObject"	//CBaseObject::MakeCarriedObject(CTFPlayer *)
+			{
+				"windows"	"385"
+				"linux"		"386"
+			}
+			"CItem::ItemCanBeTouchedByPlayer"
+			{
+				"windows" 	"226"
+				"linux" 	"229"
+			}
+			"CBaseAnimating::SetSequence"
+			{
+				"windows" 	"198"
+				"linux" 	"199"
+			}
+			"CBaseEntity::MyNextBotPointer"
+			{
+				"windows"	"72"
+				"linux"		"73"
+			}
+			"INextBot::GetBodyInterface"
+			{
+				"windows"	"49"
+				"linux"		"50"
+			}
+			"IBody::GetHullMins"
+			{
+				"windows"	"78"
+				"linux"		"79"
+			}
+			"IBody::GetHullMaxs"
+			{
+				"windows"	"79"
+				"linux"		"80"
+			}
+			"CBaseAnimatingOverlay::StudioFrameAdvance"
+			{
+				"windows" 	"197"
+				"linux" 	"198"
+			}
+			"CBaseAnimating::DispatchAnimEvents"
+			{
+				"windows"	"209"
+				"linux"		"210"
+			}
+			"CTFSword::GetSwordHealthMod"
+			{
+				"windows" 	"481"
+				"linux" 	"489"
+			}
+			"CTFSword::GetSwordSpeedMod"
+			{
+				"windows" 	"480"
+				"linux" 	"488"
+			}
+			"CBaseEntity::TakeHealth"
+			{
+				"windows" 	"64"
+				"linux" 	"65"
+			}
+			"ApplyOnDamageAliveModifyRules_PatchLength"
+			{
+				"windows" 	"6"
+				"linux" 	"11"
+			}
+			"CTFShovel::HasDamageBoost"
+			{
+				"windows" 	"477"
+				"linux" 	"484"
+			}
+			"CTFShovel::HasSpeedBoost"
+			{
+				"windows" 	"478"
+				"linux" 	"485"
+			}
+			"CTFWeaponBase::InternalGetEffectBarRechargeTime"
+			{
+				"windows" 	"459"
+				"linux" 	"466"
+			}
+			"CTFWeaponBase::GetProjectileSpeed"
+			{
+				"linux" 	"481"
+			}
+			"CTFWeaponBase::GetProjectileGravity"
+			{
+				"linux" 	"482"
+			}
+			"CEconItemView::IterateAttributes"
+            {
+				"linux"     "19"
+				"windows"	"18"
+			}
+		}
+		"Addresses"
+		{
+			"ResetSequence"
+			{
+				"signature" 	"CBaseAnimating::ResetSequence"
+			}
+			
+			"ApplyOnDamageAliveModifyRules"
+			{
+				"signature" 	"CTFGameRules::ApplyOnDamageAliveModifyRules_patch"
+				"linux"
+				{
+					"offset" 	"10"
+				}
+				"windows"
+				{
+					"offset" 	"2990"
+				}
+			}
+			
+			"CTFProjectile_Cleaver::OnHit"
+			{
+				"signature" 	"CTFProjectile_Cleaver::OnHit"
+				"offset" 		"459"
+			}
+			"CTFGameRules::ApplyOnDamageModifyRules"
+			{
+				"signature" 	"CTFGameRules::ApplyOnDamageModifyRules"
+				"offset" 		"2661"
+			}
+		}
+		"Signatures"
+		{
+			"CBaseAnimating::ResetSequence"		//(int nSequence) "ResetSequence : %s: %s -> %s\n"
+			{
+				"library" 	"server"
+				"windows"	"\x55\x8B\xEC\xA1\x2A\x2A\x2A\x2A\x53\x56\x57\x83\x78\x30\x00\x8B\xD9\x8B\x7D\x08"
+				"linux"		"@_ZN14CBaseAnimating13ResetSequenceEi"
+			}
+			"GetSequenceName"	//(CStudioHdr*, int) Not CBaseAnimating::GetSequenceName
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x56\x8B\x75\x08\x57\x85\xF6\x74\x2A\x8B\x7D\x0C\x85\xFF\x78\x2A\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x3B\xF8\x7D\x2A\x57\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x5F\x5E\x03\x40\x04"
+				"linux" 	"@_Z15GetSequenceNameP10CStudioHdri"
+			}
+			"LookupSequence" //int ( CStudioHdr *pstudiohdr, const char *label ) "spew_bars_context" NOTE: NOT CBaseAnimating::LookupSequence
+			{
+				"windows"	"\x55\x8B\xEC\x56\x8B\x75\x08\x85\xF6\x75\x2A\x33\xC0\x5E\x5D\xC3\x8B\xCE\xE8\x2A\x2A\x2A\x2A\x84\xC0\x74\x2A\x53"
+				"linux"		"@_Z14LookupSequenceP10CStudioHdrPKc"
+			}
+			"CBaseAnimating::GetSequenceName"
+			{
+				"library" 	"server"
+				"linux"		"@_ZN14CBaseAnimating15GetSequenceNameEi"
+				// no windows sig gdi
+			}
+			"CAI_BaseNPC::InputForceInteractionWithNPC"
+			{
+				"library"	"server"
+				"windows" 	"\x55\x8B\xEC\x81\xEC\x08\x01\x00\x00\x53\x8B\x5D\x08"
+			}
+			"CWeaponMedigun::AllowedToHealTarget"
+			{
+				"library"	"server"
+				"windows"	"\x55\x8B\xEC\x53\x8B\xD9\x56\x57\x8B\xB3\xE8\x01\x00\x00"
+				"linux"		"@_ZN14CWeaponMedigun19AllowedToHealTargetEP11CBaseEntity"
+			}
+			
+			"CTFRune::CreateRune"
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x83\xEC\x0C\x8B\x45\x08\x56\x57\x6A\x00"
+				"linux" 	"@_ZN7CTFRune10CreateRuneERK6Vector11RuneTypes_tibbS0_"
+			}
+			
+			"CTFRune::MyTouch"
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x83\xEC\x24\x53\x8B\xD9\x56\x8B\x75\x08"
+				"linux" 	"@_ZN7CTFRune7MyTouchEP11CBasePlayer"
+			}
+			
+			"CBaseAnimatingOverlay::StudioFrameAdvance"
+			{
+				"library" 	"server"
+				"windows" 	"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x83\xEC\x38\x56\x57\x8B\xF9\xE8\x2A\x2A\x2A\x2A"
+				"linux" 	"@_ZN21CBaseAnimatingOverlay18StudioFrameAdvanceEv"
+			}
+			
+			"CTFStunBall::ApplyBallImpactDamageEffectToVictim"
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x81\xEC\x90\x00\x00\x00\x53\x57\x8B\x7D\x08"
+				"linux" 	"@_ZN11CTFStunBall29ApplyBallImpactEffectOnVictimEP11CBaseEntity"
+			}
+			
+			"CTFPlayer::AddCustomAttribute"	// (char*, float, float)
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\xF3\x0F\x10\x4D\x10\x83\xEC\x10"
+				"linux" 	"@_ZN9CTFPlayer18AddCustomAttributeEPKcff"
+			}
+			
+			"CTFLunchBox::ApplyBiteEffects" // (CTFPlayer*)
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x51\x53\x8B\xD9\x56\x57\x6A\x01"
+				"linux" 	"@_ZN11CTFLunchBox16ApplyBiteEffectsEP9CTFPlayer"
+			}
+			
+			"CTFPlayer::TakeHealth"	// (float, int)
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x56\x8B\xF1\x6A\x1F"
+				"linux" 	"@_ZN9CTFPlayer10TakeHealthEfi"
+			}
+			
+			"CTFPlayer::GetMaxAmmo"	// (int, int)
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x8B\x45\x0C\x56\x57\x8B\xF9\x83\xF8\xFF"
+				"linux" 	"@_ZN9CTFPlayer10GetMaxAmmoEii"
+			}
+			
+			"CTFPlayerShared::AddCond"	// (ETFCond, float, CBaseEntity*)
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x83\xEC\x08\x56\x8B\xF1\x8B\x8E\x90\x01\x00\x00\x85\xC9"
+				"linux" 	"@_ZN15CTFPlayerShared7AddCondE7ETFCondfP11CBaseEntity"
+			}
+			
+			"CTFPlayer::DoTauntAttack"	// ()
+			{
+				"library"	"server"
+				"windows" 	"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\xE8\x0D\x00\x00"
+				"linux" 	"@_ZN9CTFPlayer13DoTauntAttackEv"
+			}
+			
+			"CAmmoPack::MyTouch" 	// (CBasePlayer *)
+			{
+				"library"	"server"
+				"windows" 	"\x55\x8B\xEC\x83\xEC\x2C\x53\x56\x8B\x75\x08\x32\xDB"
+				"linux" 	"@_ZN9CAmmoPack7MyTouchEP11CBasePlayer"
+			}
+			
+			"CTFPlayerShared::AddToSpyCloakMeter"	// (float, bool)
+			{
+				"library" 	"server"
+				"windows" 	"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x83\xEC\x28\x56\x57\x8B\xF9\x6A\x39"
+				"linux" 	"@_ZN15CTFPlayerShared18AddToSpyCloakMeterEfb"
+			}
+			
+			"CTFGameRules::ApplyOnDamageAliveModifyRules_patch"
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x81\xEC\xD4\x00\x00\x00\x53\x8B\x5D\x0C"
+				"linux" 	"\xF6\x46\x3C\x40\x0F\x84\x2A\x2A\x2A\x2A"
+			}
+			"CTFFlameThrower::ComputeCrayAirBlastForce"
+			{
+				"library" 	"server"
+				"windows" 	"\x53\x8B\xDC\x83\xEC\x08\x83\xE4\xF0\x83\xC4\x04\x55\x8B\x6B\x04\x89\x6C\x24\x04\x8B\xEC\x81\xEC\x68\x03\x00\x00"
+				"linux" 	"@_ZN15CTFFlameThrower24ComputeCrayAirBlastForceEP9CTFPlayerS1_R6VectorS3_"
+			}
+			"CTFPlayer::ApplyAbsVelocityImpulse"
+			{
+				"library" 	"server"
+				"windows" 	"\x55\x8B\xEC\x83\xEC\x18\x8B\x55\x08\xF3\x0F\x10\x05\x2A\x2A\x2A\x2A\x56\x8B\xF1\xF3\x0F\x11\x45\x08"
+				"linux" 	"@_ZN9CTFPlayer23ApplyAbsVelocityImpulseERK6Vector"
+			}
+			"CTFWeaponBase::ApplyOnHitAttributes"
+			{
+				"library" 	"server"
+				"linux" 	"@_ZN13CTFWeaponBase20ApplyOnHitAttributesEP11CBaseEntityP9CTFPlayerRK15CTakeDamageInfo"
+			}
+			"CTFProjectile_Cleaver::OnHit"
+			{
+				"library" 	"server"
+				"linux" 	"@_ZN21CTFProjectile_Cleaver5OnHitEP11CBaseEntity"
+			}
+			"CTFGameRules::ApplyOnDamageModifyRules"
+			{
+				"library" 	"server"
+				"linux" 	"@_ZN12CTFGameRules24ApplyOnDamageModifyRulesER15CTakeDamageInfoP11CBaseEntityb"
+			}
+		}
+	}
+}
