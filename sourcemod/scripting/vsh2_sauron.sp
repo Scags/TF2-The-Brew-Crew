@@ -146,7 +146,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -335,6 +335,7 @@ public Action OnPlayerRunCmd(int client, int & buttons, int & impulse, float vel
 	VSH2Player player = VSH2Player(client);
 	if (player.iType == ThisPluginIndex && IsPlayerAlive(player.index) && (buttons & (IN_RELOAD|IN_ATTACK3)) && player.flRAGE >= 50.0 && !(GetEntProp(client, Prop_Data, "m_nOldButtons") & (IN_RELOAD|IN_ATTACK3)))
 		ShadowStrike(player);
+	return Plugin_Continue;
 }
 
 public void ShadowStrike(const VSH2Player player)

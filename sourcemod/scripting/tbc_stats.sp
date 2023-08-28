@@ -111,7 +111,7 @@ public void OnGameFrame()
 public Action Timer_Playtime(Handle timer)
 {
 	if (!bEnabled)
-		return;
+		return Plugin_Continue;
 	for (int i = MaxClients; i; --i)
 	{
 		if (!IsClientInGame(i) || !bRegistered[i])
@@ -119,12 +119,13 @@ public Action Timer_Playtime(Handle timer)
 
 		++iPlayTime[i];
 	}
+	return Plugin_Continue;
 }
 
 public Action Timer_GiveGimgim(Handle timer)
 {
 	if (!bEnabled)
-		return;
+		return Plugin_Continue;
 
 	for (int i = MaxClients; i; --i)
 	{
@@ -137,6 +138,7 @@ public Action Timer_GiveGimgim(Handle timer)
 		AddGims(i, 6);
 		CPrintToChat(i, TBC_TAG ... "You just gained {unique}6{default} Gimgims!");
 	}
+	return Plugin_Continue;
 }
 
 public void OnClientConnected(int client)
@@ -244,6 +246,7 @@ public Action Timer_CheckAgain(Handle timer, any data)
 	int client = GetClientOfUserId(data);
 	if (client)
 		OnClientAuthorized(client, "");
+	return Plugin_Continue;
 }
 
 public int DBCB_Connect(Database db, const char[] error, any data)
@@ -251,7 +254,7 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	if (db == null)
 	{
 		LogError("DBCB_Connect: %s", error);
-		return;
+		return 0;
 	}
 
 	delete hTheDB;
@@ -268,12 +271,14 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 			OnClientAuthorized(i, "");
 			OnClientPostAdminCheck(i);
 		}
+	return 0;
 }
 
 public int DBCB_Query(Database db, DBResultSet results, const char[] error, any data)
 {
 	if (!results)
 		LogError("DBCB_Query: %s", error);
+	return 0;
 }
 
 public void CCB_Connect_Success(Database db, any data, int numQueries, DBResultSet[] results, any[] queryData)
@@ -343,7 +348,7 @@ public int CCB_Update(Database db, DBResultSet results, const char[] error, Data
 	{
 		delete pack;
 		LogError("CCB_Update: %s", error);
-		return;
+		return 0;
 	}
 
 	int id = pack.ReadCell();
@@ -361,12 +366,14 @@ public int CCB_Update(Database db, DBResultSet results, const char[] error, Data
 	else hTheDB.Format(query, sizeof(query), "INSERT INTO %s (playername, authid, gimgims) VALUES ('%s', %d, %d)", table, name, id, gimgims);
 
 	hTheDB.Query(CCB_Updated, query);
+	return 0;
 }
 
 public int CCB_Updated(Database db, DBResultSet results, const char[] error, any data)
 {
 	if (!results)
 		LogError("CCB_Updated: %s", error);
+	return 0;
 }
 
 public void OnPlayerDeath(Event event, const char[] name, bool dontBroadcast)
@@ -529,6 +536,7 @@ public Action CmdStats(int client, int args)
 	menu.AddItem("1", "View the Top 10 monthly players");
 	menu.AddItem("2", "View the Top 10 overall players");
 	menu.Display(client, 0);
+	return Plugin_Handled;
 }
 
 public int StatsMenu(Menu menu, MenuAction action, int client, int select)
@@ -547,6 +555,7 @@ public int StatsMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 public Action CmdTop(int client, int args)
 {
@@ -600,12 +609,12 @@ public int CCB_CmdGimgims(Database db, DBResultSet results, char[] error, any da
 	if (!results)
 	{
 		LogError("CCB_CmdGimgims: %s", error);
-		return;
+		return 0;
 	}
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	if (results.FetchRow() && results.RowCount)
 	{
@@ -624,6 +633,7 @@ public int CCB_CmdGimgims(Database db, DBResultSet results, char[] error, any da
 			delete panel;
 		}
 	}
+	return 0;
 }
 public Action CmdRank(int client, int args)
 {
@@ -653,12 +663,12 @@ public int CCB_Top(Database db, DBResultSet results, const char[] error, any dat
 	if (!results)
 	{
 		LogError("CCB_Top: %s", error);
-		return;
+		return 0;
 	}
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	Menu menu = new Menu(Top10Menu);
 	menu.SetTitle("[TBC] Overall Top 10");
@@ -677,6 +687,7 @@ public int CCB_Top(Database db, DBResultSet results, const char[] error, any dat
 
 	menu.ExitBackButton = true;
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int Top10Menu(Menu menu, MenuAction action, int client, int select)
@@ -692,6 +703,7 @@ public int Top10Menu(Menu menu, MenuAction action, int client, int select)
 				FakeClientCommandEx(client, "sm_top10");
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int CCB_TopM(Database db, DBResultSet results, const char[] error, any data)
@@ -699,12 +711,12 @@ public int CCB_TopM(Database db, DBResultSet results, const char[] error, any da
 	if (!results)
 	{
 		LogError("CCB_TopM: %s", error);
-		return;
+		return 0;
 	}
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	Menu menu = new Menu(Top10MMenu);
 	menu.SetTitle("[TBC] Monthly Top 10");
@@ -723,6 +735,7 @@ public int CCB_TopM(Database db, DBResultSet results, const char[] error, any da
 
 	menu.ExitBackButton = true;
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int Top10MMenu(Menu menu, MenuAction action, int client, int select)
@@ -738,6 +751,7 @@ public int Top10MMenu(Menu menu, MenuAction action, int client, int select)
 				FakeClientCommandEx(client, "sm_top10m");
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public void CCB_Rank(Database db, DBResultSet results, const char[] error, any data)
@@ -765,6 +779,8 @@ public void CCB_Rank(Database db, DBResultSet results, const char[] error, any d
 		delete panel;
 	}
 }
+
+#if 0
 
 stock void AddBounty(int client, int args)
 {
@@ -882,6 +898,7 @@ public int HBountyMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+	return 0;
 }
 
 stock Action OnClientSayCommand_NO(int client, const char[] command, const char[] sArgs)
@@ -921,6 +938,7 @@ stock Action OnClientSayCommand_NO(int client, const char[] command, const char[
 	}
 	return Plugin_Continue;
 }
+#endif
 
 public int Native_GiveCredits(Handle plugin, int numParams)
 {
@@ -928,18 +946,19 @@ public int Native_GiveCredits(Handle plugin, int numParams)
 	int amount = GetNativeCell(2);
 
 	if (!(0 < client <= MaxClients) || !IsClientInGame(client))
-		return;
+		return 0;
 
 	if (!bRegistered[client])
 	{
 		LogError("Client %d (%N) is not registered!", client, client);
-		return;
+		return 0;
 	}
 
 	AddGims(client, amount);
+	return 0;
 }
 
 public int PanelPanel(Menu menu, MenuAction action, int client, int select)
 {
-
+	return 0;
 }

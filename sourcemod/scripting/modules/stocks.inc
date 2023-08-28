@@ -2085,7 +2085,7 @@ stock int TF2_GetObjectOfType(int client, TFObjectType objtype, TFObjectMode obj
 			return obj;
 		}
 
-	}	while ++count < numobjs;
+	}	while (++count < numobjs);
 	return -1;
 }
 

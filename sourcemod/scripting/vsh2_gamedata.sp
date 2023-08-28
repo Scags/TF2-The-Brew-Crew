@@ -1,8 +1,8 @@
+#include <scag>
 #include <dhooks>
 #include <sdktools>
 #include <sdkhooks>
 #include <vsh2>
-#include <scag>
 #include <tf2powups>
 #include <tf2attributes>
 #include <tf2items>
@@ -12,8 +12,8 @@ Handle hItemCanBeTouchedByPlayer;
 Handle hGetSwordSpeedMod;
 Handle hHasSpeedBoost;
 Handle hHasDamageBoost;
-Handle hGetProjectileSpeed;
-Handle hGetProjectileGravity;
+//Handle hGetProjectileSpeed;
+//Handle hGetProjectileGravity;
 
 //Handle hGetMaxAmmo;
 //Handle hTakeHealth;
@@ -222,8 +222,8 @@ public void fwdOnRedPlayerThink(const VSH2Player player)
 
 public void BuildingThink(int iClient)
 {
-	const int iObjectType = view_as<int>(TFObjectType);
-	const int iObjectMode = view_as<int>(TFObjectMode);
+	const int iObjectType = 4;	//view_as<int>(TFObjectType);
+	const int iObjectMode = 2;	//view_as<int>(TFObjectMode);
 	int iBuilding[iObjectType][iObjectMode];	//Building index built from client
 
 	TFTeam nTeam = TF2_GetClientTeam(iClient);
@@ -425,7 +425,7 @@ stock RuneTypes GetRandRune()
 	int val;
 	do
 		val = GetRandomInt(0, 11);
-		while val == 10 || val == 8;
+		while (val == 10 || val == 8);
 	return view_as< RuneTypes >(val);
 }
 
@@ -481,14 +481,14 @@ public MRESReturn CTFStunBall_ApplyBallImpactDamageEffectToVictim(int pThis, Han
 {
 	int owner = GetEntPropEnt(pThis, Prop_Send, "m_hOwnerEntity");
 	if (!(0 < owner <= MaxClients))
-		return;
+		return MRES_Ignored;
 
 	int other = DHookGetParam(hParams, 1);
 	if (!(0 < other <= MaxClients))
-		return;
+		return MRES_Ignored;
 
 	if (!TF2_IsKillable(other))
-		return;
+		return MRES_Ignored;
 
 	VSH2Player player = VSH2Player(other);
 	if (player.bIsBoss)
@@ -503,6 +503,7 @@ public MRESReturn CTFStunBall_ApplyBallImpactDamageEffectToVictim(int pThis, Han
 //			PrintToChatAll("charge -= %.2f = %.2f", 25.0*time, player.flCharge);
 		}
 	}
+	return MRES_Ignored;
 }
 
 float g_hp;
@@ -560,6 +561,7 @@ public MRESReturn CTFLunchBox_ApplyBiteEffects_Post(int pThis, Handle hParams)
 		g_hp = 0.0;
 		g_heal = false;
 	}
+	return MRES_Ignored;
 }
 
 bool g_Milked;
@@ -622,11 +624,13 @@ int bonk;
 public MRESReturn CTFPlayer_DoTauntAttack(int pThis)
 {
 	bonk = true;
+	return MRES_Ignored;
 }
 
 public MRESReturn CTFPlayer_DoTauntAttack_Post(int pThis)
 {
 	bonk = false;
+	return MRES_Ignored;
 }
 
 public MRESReturn CTFPlayerShared_AddCond(Address pThis, Handle hParams)
@@ -652,10 +656,12 @@ bool cloak;
 public MRESReturn CAmmoPack_MyTouch(Handle hParams)
 {
 	cloak = true;
+	return MRES_Ignored;
 }
 public MRESReturn CAmmoPack_MyTouch_Post(Handle hParams)
 {
 	cloak = false;
+	return MRES_Ignored;
 }
 public MRESReturn CTFPlayerShared_AddToSpyCloakMeter(Handle hParams)
 {
@@ -761,15 +767,15 @@ public Action TF2_OnRuneSpawn(float pos[3], RuneTypes &type, int &teammaybe, boo
 	return Plugin_Changed;
 }
 
-stock int LookupSequence(int ent, Address pStudioHdr, const char[] str)
-{
-	return SDKCall(hLookupSequence, pStudioHdr, str);
-}
+// stock int LookupSequence(int ent, Address pStudioHdr, const char[] str)
+// {
+// 	return SDKCall(hLookupSequence, pStudioHdr, str);
+// }
 
-stock void ResetSequence(int ent, int seq)
-{
-	SDKCall(hResetSequence, ent, seq);
-}
+// stock void ResetSequence(int ent, int seq)
+// {
+// 	SDKCall(hResetSequence, ent, seq);
+// }
 
 stock int TF2_GetMatchingTeleporter(int iTele)	//Get the matching teleporter entity of a given Teleporter
 {

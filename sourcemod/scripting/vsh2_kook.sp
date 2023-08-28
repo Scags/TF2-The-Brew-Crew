@@ -27,6 +27,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 {
 	MarkNativeAsOptional("VSH2Ach_Toggle");
 	MarkNativeAsOptional("VSH2Ach_AddTo");
+	return APLRes_Success;
 }
 
 public void OnLibraryAdded(const char[] name)
@@ -126,7 +127,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {

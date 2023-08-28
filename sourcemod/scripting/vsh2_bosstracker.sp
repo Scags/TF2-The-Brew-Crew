@@ -13,7 +13,7 @@ public Plugin myinfo =  {
 Database hTheDB;
 
 #define DBPARAMS		Database db, DBResultSet results, const char[] error, any data
-#define DECL_ERROR(%1)	if (!results) { LogError(#%1 ... ": %s", error); return; }
+#define DECL_ERROR(%1)	if (!results) { LogError(#%1 ... ": %s", error); return 0; }
 
 public void OnPluginStart()
 {
@@ -68,6 +68,7 @@ public int DBCB_Query(DBPARAMS)
 		hTheDB.Query(DBCB_Query2, query);
 	}
 	delete pack;
+	return 0;
 }
 
 public int DBCB_Connect(Database db, const char[] error, any data)
@@ -75,13 +76,13 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	if (!db)
 	{
 		LogError("DBCB_Connect: %s", error);
-		return;
+		return 0;
 	}
 
 	if (hTheDB)
 	{
 		delete db;
-		return;
+		return 0;
 	}
 
 	hTheDB = db;
@@ -89,14 +90,17 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	db.Query(DBCB_Create, "CREATE TABLE IF NOT EXISTS vsh2_bosstracker ("
 		... "bossname VARCHAR(64),"
 		... "count INT NOT NULL DEFAULT 0)");
+	return 0;
 }
 
 public int DBCB_Create(DBPARAMS)
 {
 	DECL_ERROR(DBCB_Create)
+	return 0;
 }
 
 public int DBCB_Query2(DBPARAMS)
 {
 	DECL_ERROR(DBCB_Query2)
+	return 0;
 }

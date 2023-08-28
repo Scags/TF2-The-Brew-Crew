@@ -1781,6 +1781,7 @@ public any Native_VSH2_setProperty(Handle plugin, int numParams)
 	char prop_name[64]; GetNativeString(2, prop_name, 64);
 	any item = GetNativeCell(3);
 	hPlayerFields[player.index].SetValue(prop_name, item);
+	return 0;
 }
 
 public any Native_Hook(Handle plugin, int numParams)
@@ -1790,6 +1791,8 @@ public any Native_Hook(Handle plugin, int numParams)
 	Function Func = GetNativeFunction(2);
 	if (g_hForwards[vsh2Hook] != null)
 		AddToForward(g_hForwards[vsh2Hook], plugin, Func);
+
+	return 0;
 }
 
 public any Native_HookEx(Handle plugin, int numParams)
@@ -1808,6 +1811,8 @@ public any Native_Unhook(Handle plugin, int numParams)
 	
 	if (g_hForwards[vsh2Hook] != null)
 		RemoveFromForward(g_hForwards[vsh2Hook], plugin, GetNativeFunction(2));
+
+	return 0;
 }
 public any Native_UnhookEx(Handle plugin, int numParams)
 {
@@ -1834,6 +1839,7 @@ public any Native_VSH2_GetWeaponSlotIndex(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int slot = GetNativeCell(2);
 	player.GetWeaponSlotIndex(slot);
+	return 0;
 }
 
 public any Native_VSH2_SetWepInvis(Handle plugin, int numParams)
@@ -1841,6 +1847,7 @@ public any Native_VSH2_SetWepInvis(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int alpha = GetNativeCell(2);
 	player.SetWepInvis(alpha);
+	return 0;
 }
 
 public any Native_VSH2_SetOverlay(Handle plugin, int numParams)
@@ -1848,6 +1855,7 @@ public any Native_VSH2_SetOverlay(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	char overlay[256]; GetNativeString(2, overlay, 256);
 	player.SetOverlay(overlay);
+	return 0;
 }
 
 public any Native_VSH2_TeleToSpawn(Handle plugin, int numParams)
@@ -1855,12 +1863,14 @@ public any Native_VSH2_TeleToSpawn(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int team = GetNativeCell(2);
 	player.TeleToSpawn(team);
+	return 0;
 }
 
 public any Native_VSH2_IncreaseHeadCount(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.IncreaseHeadCount();
+	return 0;
 }
 
 public any Native_VSH2_SpawnSmallHealthPack(Handle plugin, int numParams)
@@ -1868,6 +1878,7 @@ public any Native_VSH2_SpawnSmallHealthPack(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int team = GetNativeCell(2);
 	player.SpawnSmallHealthPack(team);
+	return 0;
 }
 
 public any Native_VSH2_ForceTeamChange(Handle plugin, int numParams)
@@ -1875,6 +1886,7 @@ public any Native_VSH2_ForceTeamChange(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int team = GetNativeCell(2);
 	player.ForceTeamChange(team);
+	return 0;
 }
 
 public any Native_VSH2_ClimbWall(Handle plugin, int numParams)
@@ -1891,6 +1903,7 @@ public any Native_VSH2_ConvertToBoss(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.ConvertToBoss();
+	return 0;
 }
 
 public any Native_VSH2_GiveRage(Handle plugin, int numParams)
@@ -1898,6 +1911,7 @@ public any Native_VSH2_GiveRage(Handle plugin, int numParams)
 	BaseBoss player = GetNativeCell(1);
 	int dmg = GetNativeCell(2);
 	player.GiveRage(dmg);
+	return 0;
 }
 
 public any Native_VSH2_MakeBossAndSwitch(Handle plugin, int numParams)
@@ -1906,12 +1920,14 @@ public any Native_VSH2_MakeBossAndSwitch(Handle plugin, int numParams)
 	int bossid = GetNativeCell(2);
 	bool callEvent = GetNativeCell(2);
 	player.MakeBossAndSwitch(bossid, callEvent);
+	return 0;
 }
 
 public any Native_VSH2_DoGenericStun(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.DoGenericStun(view_as< float >(GetNativeCell(2)));
+	return 0;
 }
 
 public any Native_VSH2_DoGenericThink(Handle plugin, int numParams)
@@ -1926,18 +1942,21 @@ public any Native_VSH2_DoGenericThink(Handle plugin, int numParams)
 	float weighdowntime = view_as< float >(GetNativeCell(8));
 	float vol = view_as< float >(GetNativeCell(9));
 	player.DoGenericThink(jump, sound, sJump, random, mp3, showhud, weighdowntime, vol);
+	return 0;
 }
 
 public any Native_VSH2_PreEquip(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.PreEquip();
+	return 0;
 }
 
 public any Native_VSH2_ReceiveGenericRage(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.ReceiveGenericRage();
+	return 0;
 }
 
 public any Native_VSH2_RemoveGenericRage(Handle plugin, int numParams)
@@ -1946,6 +1965,7 @@ public any Native_VSH2_RemoveGenericRage(Handle plugin, int numParams)
 	int other = GetNativeCell(2);
 	bool jarate = GetNativeCell(3);
 	player.RemoveGenericRage(other, jarate);
+	return 0;
 }
 
 public any Native_VSH2_PresetType_Get(Handle plugin, int numParams)
@@ -1958,6 +1978,7 @@ public any Native_VSH2_PresetType_Set(Handle plugin, int numParams)
 {
 	BaseBoss player = GetNativeCell(1);
 	player.iPresetType = GetNativeCell(2);
+	return 0;
 }
 
 public any Native_VSH2_Map_Get(Handle plugin, int numParams)
@@ -1968,6 +1989,7 @@ public any Native_VSH2_Map_Get(Handle plugin, int numParams)
 public any Native_VSH2_ConvertToMinion(Handle plugin, int numParams)
 {
 	BaseBoss(GetNativeCell(1)).ConvertToMinion(GetNativeCell(2), GetNativeCell(3));
+	return 0;
 }
 
 public any Native_VSH2GameMode_GetProperty(Handle plugin, int numParams)
@@ -1985,6 +2007,7 @@ public any Native_VSH2GameMode_SetProperty(Handle plugin, int numParams)
 	char prop_name[64]; GetNativeString(1, prop_name, 64);
 	any item = GetNativeCell(2);
 	hGameModeFields.SetValue(prop_name, item);
+	return 0;
 }
 public any Native_VSH2GameMode_GetRandomBoss(Handle plugin, int numParams)
 {
@@ -2013,14 +2036,17 @@ public any Native_VSH2GameMode_GetTotalBossHealth(Handle plugin, int numParams)
 public any Native_VSH2GameMode_SearchForItemPacks(Handle plugin, int numParams)
 {
 	gamemode.SearchForItemPacks();
+	return 0;
 }
 public any Native_VSH2GameMode_UpdateBossHealth(Handle plugin, int numParams)
 {
 	gamemode.UpdateBossHealth();
+	return 0;
 }
 public any Native_VSH2GameMode_GetBossType(Handle plugin, int numParams)
 {
 	gamemode.GetBossType();
+	return 0;
 }
 public any Native_VSH2GameMode_GetTotalRedPlayers(Handle plugin, int numParams)
 {
@@ -2037,10 +2063,12 @@ public any Native_JumpHud(Handle plugin, int numParams)
 public any Native_AddToTDC(Handle plugin, int numParams)
 {
 	hFwdCompat[GetNativeCell(1)].Push(GetNativeCell(2));
+	return 0;
 }
 public any Native_VSH2GameMode_GiveBackRage(Handle plugin, int numParams)
 {
 	RequestFrame(GiveBackRage, GetNativeCell(1));
+	return 0;
 }
 public any Native_VSH2GameMode_MaxBoss(Handle plugin, int numParams)
 {
@@ -2057,4 +2085,5 @@ public any Native_Self(Handle plugin, int numParams)
 public any Native_UnCycle(Handle plugin, int numParams)
 {
 	hNoCycle.Push(GetNativeCell(1));
+	return 0;
 }

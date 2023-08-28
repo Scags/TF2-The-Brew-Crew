@@ -90,27 +90,27 @@ public MRESReturn CTFFlameThrower_FireAirblast(int iWeapon)
 {
 	int iClient = GetEntPropEnt(iWeapon, Prop_Send, "m_hOwnerEntity");
 	if (!(0 < iClient <= MaxClients))
-		return;
+		return MRES_Ignored;
 
 	float flSpeed = GetEntPropFloat( iClient, Prop_Send, "m_flMaxspeed" );
 	if( flSpeed > 0.0 && flSpeed < 5.0 )
-		return;
+		return MRES_Ignored;
 	
 	if( GetEntProp( iClient, Prop_Data, "m_nWaterLevel" ) > 1 )
-		return;
+		return MRES_Ignored;
 	
 	if( (GetClientButtons(iClient) & IN_ATTACK2) != IN_ATTACK2 )
-		return;
+		return MRES_Ignored;
 
 	int idx = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
 	if (idx == 1178)
-		return;
+		return MRES_Ignored;
 
 	if (GetEntPropFloat(iWeapon, Prop_Send, "m_flNextSecondaryAttack") < GetGameTime())
-		return;
+		return MRES_Ignored;
 
 	if( (GetEntityFlags(iClient) & FL_ONGROUND) == FL_ONGROUND )
-		return;
+		return MRES_Ignored;
 
 	float scale = 1.0;
 	Address attrib = TF2Attrib_GetByDefIndex(iWeapon, 255);
@@ -149,6 +149,7 @@ public MRESReturn CTFFlameThrower_FireAirblast(int iWeapon)
 	AddVectors(vecVelocity, myvec, myvec);
 	TeleportEntity( iClient, NULL_VECTOR, NULL_VECTOR, myvec );
 //	RequestFrame(DoDelay, EntIndexToEntRef(iWeapon));
+	return MRES_Ignored;
 }
 
 stock bool IsValidClient( int iClient )

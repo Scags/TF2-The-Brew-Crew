@@ -230,7 +230,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player player)
 {
@@ -948,6 +948,7 @@ public Action DeleteParticles(Handle timer, any particle)
 		if (StrEqual(classname, "info_particle_system", false))
 			AcceptEntityInput(ent, "kill");
 	}
+	return Plugin_Handled;
 }
 
 stock bool TE_DrawBox(int client, float m_vecOrigin[3], float m_vecMins[3], float m_vecMaxs[3], float flDur = 0.1, int color[4], bool hullonly = false)
@@ -1133,6 +1134,7 @@ stock bool Dio_GetAimPos(const int client, float vecPos[3], bool &hit)
 	}
 	else hit = false;
 	delete trace;
+	return hit;
 }
 
 public bool DioTrace(int ent, int mask, any data)

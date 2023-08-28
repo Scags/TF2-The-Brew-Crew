@@ -73,6 +73,7 @@ public Action OnPlayerRunCmd(int client, int & buttons, int & impulse, float vel
 			player.flRAGE = 0.0;
 		}
 	}
+	return Plugin_Continue;
 }
 
 public void fwdOnDownloadsCalled()
@@ -146,7 +147,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -384,7 +385,7 @@ public Action Timer_NukeHitsHere(Handle timer, DataPack pack)
 	float pos2[3];
 	VSH2Player player = VSH2Player(pack.ReadCell(), true);
 	if (!player)
-		return;
+		return Plugin_Continue;
 
 	int i;
 	for (i = MaxClients; i; --i)
@@ -412,6 +413,7 @@ public Action Timer_NukeHitsHere(Handle timer, DataPack pack)
 
 		SDKHooks_TakeDamage(i, 0, player.index, 449.0, DMG_BLAST, _, _, pos);
 	}
+	return Plugin_Continue;
 }
 public Action Timer_Delete(Handle hTimer, any iRefEnt) 
 { 
@@ -508,6 +510,7 @@ public Action DeleteParticles(Handle timer, any particle)
 		if (StrEqual(classname, "info_particle_system", false))
 			AcceptEntityInput(ent, "kill");
 	}
+	return Plugin_Continue;
 }
 public Action RemoveEnt(Handle timer, any entid)
 {

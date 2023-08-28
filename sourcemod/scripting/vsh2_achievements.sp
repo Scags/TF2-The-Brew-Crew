@@ -224,6 +224,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 	MarkNativeAsOptional("TBC_GiveCredits");
 	RegPluginLibrary("VSH2Ach");
+	return APLRes_Success;
 }
 
 #define DEBUG 0
@@ -289,6 +290,7 @@ public int CCB_Disconnect(Database db, DBResultSet results, const char[] error, 
 {
 	if (!results)
 		LogError("CCB_Disconnect: %s", error);
+	return 0;
 }
 
 public void OnClientAuthorized(int client, const char[] auth)
@@ -382,6 +384,7 @@ public int CCB_Ach(Database db, DBResultSet results, const char[] error, any dat
 {
 	if (!results)
 		LogError("CCB_Ach: %s", error);
+	return 0;
 }
 
 stock void SayText2(int author_index , const char[] message)
@@ -434,6 +437,7 @@ public Action Timer_DeleteParticles(Handle argTimer, any ref)
 	int ent = EntRefToEntIndex(ref);
 	if (IsValidEntity(ent))
 		AcceptEntityInput(ent, "Kill");
+	return Plugin_Continue;
 }
 
 public Action MyAchievements(int client, int args)
@@ -550,7 +554,7 @@ public int AchMenu(Menu menu, MenuAction action, int client, int select)
 					{
 						CPrintToChat(client, "{olive}[VSH 2]{default} No targets found.");
 						delete menu2;
-						return;
+						return 0;
 					}
 
 					menu2.Display(client, 0);
@@ -560,6 +564,7 @@ public int AchMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int InGameAchMenu(Menu menu, MenuAction action, int client, int select)
@@ -572,13 +577,14 @@ public int InGameAchMenu(Menu menu, MenuAction action, int client, int select)
 			if (!GetClientOfUserId(StringToInt(id)))
 			{
 				CPrintToChat(client, "{olive}[VSH 2]{default} Client is no longer in-game.");
-				return;
+				return 0;
 			}
 			flCmdTime[client] = 0.0;
 			FakeClientCommand(client, "sm_haleach #%d", StringToInt(id));
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int DBCB_Connect(Database db, const char[] error, any data)
@@ -586,13 +592,13 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	if (!db)
 	{
 		LogError("[VSH2ACH] Induction error: %s", error);
-		return;
+		return 0;
 	}
 
 	if (hTheDB)
 	{
 		delete db;
-		return;
+		return 0;
 	}
 
 	hTheDB = db;
@@ -612,6 +618,7 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	db.Query(DBCB_Create, query);
 	ReplaceStringEx(query, sizeof(query), "vsh2_achievements", "vsh2_achievements_timestamp");
 	db.Query(DBCB_Create, query);
+	return 0;
 }
 
 public int DBCB_Create(Database db, DBResultSet results, const char[] error, any data)
@@ -634,25 +641,26 @@ public int DBCB_Create(Database db, DBResultSet results, const char[] error, any
 		}
 	}
 	bLate = false;
+	return 0;
 }
 
 public int CCB_Achievements(Database db, DBResultSet results, const char[] error, any data)
 {
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	if (!results)
 	{
 		CPrintToChat(client, "{olive}[VSH 2]{default} Unable to find client. Invalid steamid or Database failure.");
 		LogError("CCB_Achievements: %s", error);
-		return;
+		return 0;
 	}
 
 	if (!results.FetchRow())
 	{
 		CPrintToChat(client, "{olive}[VSH 2]{default} Unable to fetch DB row. Invalid steamid or Database failure.");
-		return;
+		return 0;
 	}
 
 	char accountid[32]; IntToString(results.FetchInt(0), accountid, sizeof(accountid));
@@ -674,26 +682,27 @@ public int CCB_Achievements(Database db, DBResultSet results, const char[] error
 		menu.AddItem(accountid, s);
 	}
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int CCB_Achievements_Name(Database db, DBResultSet results, const char[] error, any data)
 {
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	if (!results)
 	{
 		CPrintToChat(client, "{olive}[VSH 2]{default} Database failure. Try again?");
 		LogError("CCB_Achievements: %s", error);
-		return;
+		return 0;
 	}
 
 	int rowcount = results.RowCount;
 	if (!results.FetchRow() || !rowcount)
 	{
 		CPrintToChat(client, "{olive}[VSH 2]{default} Unable to fetch. Invalid name?");
-		return;
+		return 0;
 	}
 
 	if (rowcount > 1)
@@ -725,7 +734,7 @@ public int CCB_Achievements_Name(Database db, DBResultSet results, const char[] 
 		}
 
 		menu.Display(client, 0);
-		return;
+		return 0;
 	}
 
 	char accountid[32]; IntToString(results.FetchInt(0), accountid, sizeof(accountid));
@@ -747,6 +756,7 @@ public int CCB_Achievements_Name(Database db, DBResultSet results, const char[] 
 		menu.AddItem(accountid, s);
 	}
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int ClientsOtherAchievements(Menu menu, MenuAction action, int client, int select)
@@ -762,6 +772,7 @@ public int ClientsOtherAchievements(Menu menu, MenuAction action, int client, in
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int OtherAchievements(Menu menu, MenuAction action, int client, int select)
@@ -826,6 +837,7 @@ public int OtherAchievements(Menu menu, MenuAction action, int client, int selec
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public void TXN_OnFailAch(Database db, DataPack pack, int numQueries, const char[] error, int failIndex, any[] queryData)
@@ -912,6 +924,7 @@ public int MyAchMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int CCB_OnGetMyAch(Database db, DBResultSet results, const char[] error, DataPack pack)
@@ -922,7 +935,7 @@ public int CCB_OnGetMyAch(Database db, DBResultSet results, const char[] error, 
 	if (!client)
 	{
 		delete pack;
-		return;
+		return 0;
 	}
 
 	int curr;
@@ -931,7 +944,7 @@ public int CCB_OnGetMyAch(Database db, DBResultSet results, const char[] error, 
 		CPrintToChat(client, "{olive}[VSH 2]{default} Error while trying to get achievement data.");
 		LogError("CCB_OnGetMyAch: %s", error);
 		delete pack;
-		return;
+		return 0;
 	}
 	else if (results.FetchRow()) curr = results.FetchInt(0);
 	else
@@ -939,7 +952,7 @@ public int CCB_OnGetMyAch(Database db, DBResultSet results, const char[] error, 
 		CPrintToChat(client, "{olive}[VSH 2]{default} Error while trying to fetch achievement data?");
 		LogError("CCB_OnGetMyAch fetch error???");
 		delete pack;
-		return;
+		return 0;
 	}
 
 	Achievement ach;
@@ -956,18 +969,19 @@ public int CCB_OnGetMyAch(Database db, DBResultSet results, const char[] error, 
 	panel.DrawItem("Exit");
 	panel.Send(client, ViewAchPanel, 9001);
 	delete panel;
+	return 0;
 }
 
 public int CCB_OnConnect(Database db, DBResultSet results, const char[] error, any data)
 {
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	if (!results)
 	{
 		LogError("CCB_OnConnect: %s", error);
-		return;
+		return 0;
 	}
 
 	bConnected[client] = true;
@@ -983,17 +997,19 @@ public int CCB_OnConnect(Database db, DBResultSet results, const char[] error, a
 		hTheDB.Query(CCB_Create, query);
 		for (int i = 0; i < MAX_ACHIEVEMENTS; ++i)
 			iProgress[client][i] = 0;
-		return;
+		return 0;
 	}
 
 	for (int i = 0; i < MAX_ACHIEVEMENTS; ++i)
 		iProgress[client][i] = results.FetchInt(i+3);
+	return 0;
 }
 
 public int CCB_Create(Database db, DBResultSet results, const char[] error, any data)
 {
 	if (!results)
 		LogError("CCB_Create: %s", error);
+	return 0;
 }
 
 public int ViewAchPanel(Menu menu, MenuAction action, int client, int select)
@@ -1004,6 +1020,7 @@ public int ViewAchPanel(Menu menu, MenuAction action, int client, int select)
 			flCmdTime[client] = 0.0;
 			FakeClientCommandEx(client, "sm_haleach @me");
 		}
+	return 0;
 }
 
 stock int CountCharInString(const char[] str, int c) {
@@ -1047,16 +1064,16 @@ stock bool GetMenuString(Menu menu, const char[] id, char[] buffer, int size)
 public any Native_AddTo(Handle plugin, int numParams)
 {
 	if (!bEnabled || !hTheDB)
-		return;
+		return 0;
 
 	int client = GetNativeCell(1);
 	if (!bConnected[client])
-		return;
+		return 0;
 
 	int idx = GetNativeCell(2);
 	int amt = GetNativeCell(3);
 	if (iProgress[client][idx] >= iGoal[idx])
-		return;
+		return 0;
 
 	iProgress[client][idx] += amt;
 	if (iProgress[client][idx] >= iGoal[idx])
@@ -1066,9 +1083,11 @@ public any Native_AddTo(Handle plugin, int numParams)
 		hAchievements.GetArray(idx, ach, sizeof(ach));
 		GiveAchievement(client, ach);
 	}
+	return 0;
 }
 
 public any Native_Toggle(Handle plugin, int numParams)
 {
 	bEnabled = !!GetNativeCell(1);
+	return 0;
 }

@@ -119,7 +119,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -388,7 +388,7 @@ public Action RemoveEnt(Handle timer, any entid)
 public Action SoundHook(int clients[64], int &numClients, char sample[PLATFORM_MAX_PATH], int &entity, int &channel, float &volume, int &level, int &pitch, int &flags, char soundEntry[PLATFORM_MAX_PATH], int &seed)
 {
 	if (entity <= MaxClients)
-		return;
+		return Plugin_Continue;
 
 	if (!strncmp(sample, ")weapons\\cleaver_hit", 20, false))
 	{
@@ -399,6 +399,7 @@ public Action SoundHook(int clients[64], int &numClients, char sample[PLATFORM_M
 			ExplodeRock(entity, owner.index);
 		}
 	}
+	return Plugin_Continue;
 }
 
 public Action TF2_CalcIsAttackCritical(int client, int wep, char[] wpnname, bool &result)
@@ -409,4 +410,5 @@ public Action TF2_CalcIsAttackCritical(int client, int wep, char[] wpnname, bool
 		EmitSoundToAll(TankThrow, _, SNDCHAN_VOICE, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, NULL_VECTOR, NULL_VECTOR, false, 0.0);
 		EmitSoundToAll(TankThrow, _, SNDCHAN_ITEM, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, NULL_VECTOR, NULL_VECTOR, false, 0.0);
 	}
+	return Plugin_Continue;
 }

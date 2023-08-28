@@ -36,6 +36,7 @@ public MRESReturn CTFFlameThrower_ComputeCrayAirBlastForce(Address pThis, DHookR
 	{
 		go = true;
 	}
+	return MRES_Ignored;
 }
 
 public MRESReturn CTFPlayer_ApplyAbsVelocityImpulse(int pThis, DHookParam params)

@@ -4,7 +4,8 @@
 #include <tf2_stocks>
 // #include <morecolors>
 // #include <dhooks>
-// #include <tf2items>
+#include <tf2items>
+#include <sdkhooks>
 // #include <profiler>
 // #include <clientprefs>
 // #include <steamworks>
@@ -54,10 +55,10 @@
 
 #define REPEAT() 			for (int i = MaxClients; i; --i) if IsClientInGame(i)
 
-#define StateDisabled 		-1
-#define StateStarting		0
-#define StateRunning 		1
-#define StateEnding 		2
+// #define StateDisabled 		-1
+// #define StateStarting		0
+// #define StateRunning 		1
+// #define StateEnding 		2
 
 #define IntGet(%1) 		public get()\
 {\
@@ -278,24 +279,6 @@ methodmap SMPlugin < Handle
 	public bool GetInfo( PluginInfo info, char[] buffer, int maxlength )
 	{
 		return GetPluginInfo(this, info, buffer, maxlength);
-	}
-};
-methodmap PluginIterator < Handle
-{
-	public PluginIterator()
-	{
-		return view_as< PluginIterator >(GetPluginIterator());
-	}
-	property bool More
-	{
-		public get()
-		{
-			return MorePlugins(this);
-		}
-	}
-	public Handle Read()
-	{
-		return ReadPlugin(this);
 	}
 };
 #if defined _tf2items_included
@@ -1258,7 +1241,7 @@ stock bool IsInRange(const int entity, const int target, const float dist, bool 
 	}
 	return false;
 }
-stock int AttachParticle(const int ent, const char[] particleType, float offset = 0.0, bool battach = true, bool remove = true)
+stock int AttachParticle(const int ent, const char[] particleType, float offset = 0.0, bool battach = true, Timer delcallback = INVALID_FUNCTION)
 {
 	int particle = CreateEntityByName("info_particle_system");
 	char tName[32];
@@ -1278,44 +1261,44 @@ stock int AttachParticle(const int ent, const char[] particleType, float offset 
 	}
 	ActivateEntity(particle);
 	AcceptEntityInput(particle, "start");
-	if (remove)
-		CreateTimer(3.0, RemoveEnt, EntIndexToEntRef(particle));
+	if (delcallback != INVALID_FUNCTION)
+		CreateTimer(3.0, delcallback, EntIndexToEntRef(particle));
 	return particle;
 }
-stock int AttachParticle2(int iEntity, const char[] strParticleEffect, const char[] strAttachPoint = "", float flOffsetZ = 0.0, float flSelfDestruct = 0.0)
-{
-#if defined RemoveEnt
-	int iParticle = CreateEntityByName("info_particle_system");
-	if (iParticle > MaxClients && IsValidEntity(iParticle))
-	{
-		float flPos[3];
-		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", flPos);
-		flPos[2] += flOffsetZ;
+// stock int AttachParticle2(int iEntity, const char[] strParticleEffect, const char[] strAttachPoint = "", float flOffsetZ = 0.0, float flSelfDestruct = 0.0)
+// {
+// #if defined RemoveEnt
+// 	int iParticle = CreateEntityByName("info_particle_system");
+// 	if (iParticle > MaxClients && IsValidEntity(iParticle))
+// 	{
+// 		float flPos[3];
+// 		GetEntPropVector(iEntity, Prop_Send, "m_vecOrigin", flPos);
+// 		flPos[2] += flOffsetZ;
 		
-		TeleportEntity(iParticle, flPos, NULL_VECTOR, NULL_VECTOR);
+// 		TeleportEntity(iParticle, flPos, NULL_VECTOR, NULL_VECTOR);
 		
-		DispatchKeyValue(iParticle, "effect_name", strParticleEffect);
-		DispatchSpawn(iParticle);
+// 		DispatchKeyValue(iParticle, "effect_name", strParticleEffect);
+// 		DispatchSpawn(iParticle);
 		
-		SetVariantString("!activator");
-		AcceptEntityInput(iParticle, "SetParent", iEntity);
-		ActivateEntity(iParticle);
+// 		SetVariantString("!activator");
+// 		AcceptEntityInput(iParticle, "SetParent", iEntity);
+// 		ActivateEntity(iParticle);
 		
-		if (strAttachPoint[0] != '\0')
-		{
-			SetVariantString(strAttachPoint);
-			AcceptEntityInput(iParticle, "SetParentAttachmentMaintainOffset");
-		}
+// 		if (strAttachPoint[0] != '\0')
+// 		{
+// 			SetVariantString(strAttachPoint);
+// 			AcceptEntityInput(iParticle, "SetParentAttachmentMaintainOffset");
+// 		}
 		
-		AcceptEntityInput(iParticle, "start");
+// 		AcceptEntityInput(iParticle, "start");
 		
-		if(flSelfDestruct > 0.0) CreateTimer(flSelfDestruct, RemoveEnt, EntIndexToEntRef(iParticle));
+// 		if(flSelfDestruct > 0.0) CreateTimer(flSelfDestruct, RemoveEnt, EntIndexToEntRef(iParticle));
 		
-		return iParticle;
-	}
-#endif
-	return 0;
-}
+// 		return iParticle;
+// 	}
+// #endif
+// 	return 0;
+// }
 stock void CreateParticles(char[] particlename, float Pos[3] = NULL_VECTOR, float time)
 {
 #if defined RemoveEnt
@@ -2707,12 +2690,13 @@ stock void RemoveParachute(const int client)
 stock float GetTensValue(float value)
 {
 	float calc = (value/100)-RoundToFloor( (value/100) );
-	return (calc *= 100.0);
+	calc *= 100.0;
+	return calc;
 }
 stock float RoundToDecimal(float value)
 {
 	value /= 10.0;
-	return (RoundToFloor(value)*10.0);
+	return RoundToFloor(value)*10.0;
 }
 stock int FindEntityByClassname2(int startEnt, const char[] classname)
 {
@@ -2792,7 +2776,8 @@ stock bool GetTrieValueCaseInsensitive(StringMap trie, const char[] key, any& va
 		return false;
 	int length = strlen(key)+1;
 	char[] trieKey = new char[length];
-	StringToLower(key, trieKey, length);
+	strcopy(trieKey, length, key);
+	StringToLower2(trieKey);
 	return trie.GetValue(trieKey, value); //GetTrieValue(trie, trieKey, value);
 }
 stock Handle GetSubPlugin(StringMap hndl)
@@ -4097,7 +4082,6 @@ stock bool IsHeadShotWeapon(int iWeapon)
 		return true;
 	return false;
 }
-#if defined _sdkhooks_included
 stock int TF2_CreateGlow(int iEnt, char[] strTargetname, SDKHookCB callback)
 {
 	char strGlowColor[18];
@@ -4134,7 +4118,6 @@ stock int TF2_CreateGlow(int iEnt, char[] strTargetname, SDKHookCB callback)
 	}
 	return -1;
 }
-#endif
 /*public Action OnSetTransmit(int entity, int client) 
 {
 	SetEdictFlags(entity, GetEdictFlags(entity) & ~FL_EDICT_ALWAYS);
@@ -4410,8 +4393,8 @@ stock bool TF2_AddMarkerHealth(int iReviver, int iMarker, int iHealthAdd)
 		GetEntPropVector(iOwner, Prop_Send, "m_vecMaxs", flMaxs);
 		GetEntPropVector(iOwner, Prop_Send, "m_vecMins", flMins);
 		
-		Handle TraceRay = TR_TraceHullFilterEx(vecMarkerPos, vecMarkerPos, flMins, flMaxs, MASK_PLAYERSOLID, TraceRayDontHitSelf, iMarker);
-		if(TR_DidHit(TraceRay)) //Can't spawn the player here or they would get stuck, teleport to reviver.
+		Handle ray = TR_TraceHullFilterEx(vecMarkerPos, vecMarkerPos, flMins, flMaxs, MASK_PLAYERSOLID, TraceRayDontHitSelf, iMarker);
+		if(TR_DidHit(ray)) //Can't spawn the player here or they would get stuck, teleport to reviver.
 		{
 			float vecReviverPos[3];
 			GetClientAbsOrigin(iReviver, vecReviverPos);
@@ -4425,7 +4408,7 @@ stock bool TF2_AddMarkerHealth(int iReviver, int iMarker, int iHealthAdd)
 			TeleportEntity(iOwner, vecMarkerPos, NULL_VECTOR, NULL_VECTOR);
 		}
 		
-		delete TraceRay;
+		delete ray;
 		
 		return true;
 	}
@@ -4572,8 +4555,8 @@ stock int GetConditionProvider(int client, TFCond cond)
 {
 	int m_Shared = FindSendPropInfo("CTFPlayer", "m_Shared");
 	
-	Address aCondSource   = Address(ReadInt(GetEntityAddress(client) + Address(m_Shared + 8)));
-	Address aCondProvider = Address(int(aCondSource) + (int(cond) * 20) + (3 * 4));
+	Address aCondSource   = view_as< Address >(ReadInt(GetEntityAddress(client) + view_as< Address >(m_Shared + 8)));
+	Address aCondProvider = view_as< Address >(int(aCondSource) + (int(cond) * 20) + (3 * 4));
 	
 	int iProvider = 0;
 	if(TF2_IsPlayerInCondition(client, cond))
@@ -5208,4 +5191,12 @@ stock int GetDeadPlayer(int team = 0)
 		clients[clientCount++] = i;
 	}
 	return (clientCount == 0) ? -1 : clients[GetRandomInt(0, clientCount - 1)];
+}
+
+stock static void StringToLower2(char[] s)
+{
+	for (int i = 0; s[i] != '\0'; ++i)
+	{
+		s[i] = CharToLower(s[i]);
+	}
 }

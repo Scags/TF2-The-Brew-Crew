@@ -167,6 +167,7 @@ public int Weapons(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public Action ASpawnWep(int client, int args)
@@ -315,4 +316,5 @@ public int AWeapons(Menu menu, MenuAction action, int i, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }

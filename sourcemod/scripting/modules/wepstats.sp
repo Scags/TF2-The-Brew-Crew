@@ -228,6 +228,7 @@ public int WepMenu_Root(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public void WepStatsMenu_Slot(int client, const char[] id, const char[] name)
@@ -266,6 +267,7 @@ public int WepMenu_Slot(MENUPARAMS)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int StatHandler(MENUPARAMS)
@@ -298,6 +300,7 @@ public int StatHandler(MENUPARAMS)
 			}
 		}
 	}
+	return 0;
 }
 
 stock void GetWeaponStat(int idx, char[] buffer, int maxlen, TFClassType class = TFClass_Unknown)

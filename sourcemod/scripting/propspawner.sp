@@ -45,7 +45,7 @@ public int PropMenuHandler(Menu menu, MenuAction action, int client, int select)
 		case MenuAction_Select:
 		{
 			if (!IsPlayerAlive(client))
-				return;
+				return 0;
 
 			char item[256], id[8];
 			menu.GetItem(select, id, sizeof(id), _, item, sizeof(item));
@@ -72,6 +72,7 @@ public int PropMenuHandler(Menu menu, MenuAction action, int client, int select)
 			menu.DisplayAt(client, select - select % 7, 0);
 		}
 	}
+	return 0;
 }
 
 stock bool GetAimPos(const int client, float vecPos[3])
@@ -81,10 +82,15 @@ stock bool GetAimPos(const int client, float vecPos[3])
 	GetClientEyePosition(client, StartOrigin);
 
 	Handle trace = TR_TraceRayFilterEx(StartOrigin, Angles, MASK_NPCSOLID | MASK_PLAYERSOLID, RayType_Infinite, TraceRayDontHitSelf, client);
+	bool r;
 	if (TR_DidHit(trace))
+	{
 		TR_GetEndPosition(vecPos, trace);
+		r = true;
+	}
 
 	delete trace;
+	return r;
 }
 
 public bool TraceRayDontHitSelf(int ent, int mask, any data)

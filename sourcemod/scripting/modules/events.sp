@@ -334,7 +334,7 @@ public Action RoundStart(Event event, const char[] name, bool dontBroadcast)
 				continue;
 
 			player.ForceTeamChange(countred > countblu ? BLU : RED);
-		} while ++tries <= 50;
+		} while (++tries <= 50);
 	}
 	else
 	{

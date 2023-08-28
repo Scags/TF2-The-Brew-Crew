@@ -134,6 +134,7 @@ public int HEffectMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+	return 0;
 }
 
 public void SheenMenu(const int client)
@@ -171,4 +172,5 @@ public int HSheenMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+	return 0;
 }

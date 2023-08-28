@@ -187,6 +187,7 @@ public int TrackerMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public void OnClientCookiesCached(int client)

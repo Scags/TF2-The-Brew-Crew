@@ -78,6 +78,7 @@ public int AskDiscordPanelHandler(Menu menu, MenuAction action, int client, int 
 
 		ShowDiscordPanel(client, handler);
 	}
+	return 0;
 }
 
 public void ShowDiscordPanel(int client, MenuHandler handler)
@@ -89,7 +90,6 @@ public void ShowDiscordPanel(int client, MenuHandler handler)
 	panel.DrawItem("No");
 	panel.Send(client, handler, 9001);
 	delete panel;
-
 }
 
 public int DiscordPanelTBC(Menu menu, MenuAction action, int client, int select)
@@ -100,6 +100,7 @@ public int DiscordPanelTBC(Menu menu, MenuAction action, int client, int select)
 			case 1:AdvMOTD_ShowMOTDPanel(client, "TBC Discord", "https://discord.gg/R8DcdGU", MOTDPANEL_TYPE_URL, true, true, true, OnMOTDFailure);
 			case 2:CPrintToChat(client, "{green}https://discord.gg/R8DcdGU");
 		}
+	return 0;
 }
 
 public int DiscordPanelWLN(Menu menu, MenuAction action, int client, int select)
@@ -110,6 +111,7 @@ public int DiscordPanelWLN(Menu menu, MenuAction action, int client, int select)
 			case 1:AdvMOTD_ShowMOTDPanel(client, "WLN Discord", "https://discord.gg/wln", MOTDPANEL_TYPE_URL, true, true, true, OnMOTDFailure);
 			case 2:CPrintToChat(client, "{green}https://discord.gg/wln");
 		}
+	return 0;
 }
 
 public void OnMOTDFailure(int client, MOTDFailureReason reason)
@@ -169,6 +171,7 @@ public int SteamGroupPanel(Menu menu, MenuAction action, int client, int select)
 			case 1:AdvMOTD_ShowMOTDPanel(client, "TBC Steamgroup", "https://steamcommunity.com/groups/thebrewcrewcommunity", MOTDPANEL_TYPE_URL, true, true, true, OnMOTDFailure);
 			case 2:CPrintToChat(client, "{green}https://steamcommunity.com/groups/thebrewcrewcommunity");
 		}
+	return 0;
 }
 
 public int DonatePanel(Menu menu, MenuAction action, int client, int select)
@@ -176,4 +179,5 @@ public int DonatePanel(Menu menu, MenuAction action, int client, int select)
 	if (action == MenuAction_Select)
 		if (select == 1)
 			AdvMOTD_ShowMOTDPanel(client, "Donate", "https://www.paypal.me/scag225", MOTDPANEL_TYPE_URL, true, true, true, OnMOTDFailure);
+	return 0;
 }

@@ -99,6 +99,7 @@ public int TurnToZeroPanelH(Menu menu, MenuAction action, int param1, int param2
 				SkipBossPanelNotify(nextBoss.index);
 		}
 	}
+	return 0;
 }
 /* FINALLY THE PANEL TRAIN HAS ENDED! */
 public int SkipHalePanelH(Menu menu, MenuAction action, int client, int param2)
@@ -106,6 +107,7 @@ public int SkipHalePanelH(Menu menu, MenuAction action, int client, int param2)
 	/*if ( IsValidAdmin(client, "b") )
 		SetBossMenu( client, -1 );
 	else CommandSetSkill( client, -1 );*/
+	return 0;
 }
 public Action SetNextSpecial(int client, int args)
 {
@@ -213,6 +215,8 @@ public int MenuHandler_PickBosses(Menu menu, MenuAction action, int client, int 
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+
+	return 0;
 }
 
 public Action MusicTogglePanelCmd(int client, int args)
@@ -262,6 +266,7 @@ public int MusicPanelH(Menu menu, MenuAction action, int client, int select)
 		else if (select == 2)
 			VolumeTogglePanel(client);
 	}
+	return 0;
 }
 
 public void VolumeTogglePanel(const int client)
@@ -288,6 +293,7 @@ public int VolumeTogglePanelH(Menu menu, MenuAction action, int client, int sele
 			CPrintToChat(client, "{olive}[VSH 2]{default} You've set your Music Volume to %.0f%%.", player.flMusicVolume*100.0);
 		}
 	}
+	return 0;
 }
 public void MusicTogglePanel(const int client)
 {
@@ -321,6 +327,7 @@ public int MusicTogglePanelH(Menu menu, MenuAction action, int param1, int param
 			}
 		}
 	}
+	return 0;
 }
 
 public Action BossSelect(int client, int args)
@@ -357,6 +364,7 @@ public int TogglePanel(Menu menu, MenuAction action, int param1, int param2)
 			}
 		}
 	}
+	return 0;
 }
 
 public Action ForceBossRealtime(int client, int args)
@@ -568,6 +576,8 @@ public int MenuHandler_ClassRush(Menu menu, MenuAction action, int client, int p
  	}
  	else if (action == MenuAction_End)
 		delete menu;
+
+	return 0;
 }
 
 public Action BossDifficulty(int client, int args)
@@ -649,6 +659,7 @@ public int DifficultyMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 #endif
 public Action GiveBossRage(int client, int args)
@@ -959,6 +970,7 @@ public Action UpdateList(int client, int args)
 public Action g_hPluginsRegisteredLength(int client, int args)
 {
 	CReplyToCommand(client, "%d", g_hPluginsRegistered.Length);
+	return Plugin_Handled;
 }
 
 public Action MyType(int client, int args)
@@ -1142,6 +1154,8 @@ public int GameModeMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+
+	return 0;
 }
 
 public int HowManyMenu(Menu menu, MenuAction action, int client, int select)
@@ -1169,6 +1183,8 @@ public int HowManyMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+
+	return 0;
 }
 
 public int ClassRushMenu(Menu menu, MenuAction action, int client, int select)
@@ -1194,6 +1210,8 @@ public int ClassRushMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+
+	return 0;
 }
 
 public Action VSHVote(int client, int args)

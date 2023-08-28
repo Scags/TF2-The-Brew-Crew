@@ -26,16 +26,17 @@ int
 
 bool
 	bRegistered[34],
-	bLate,
-	bAch
+	bLate
+//	bAch
 ;
 
 #define DBPARAMS		Database db, DBResultSet results, const char[] error, any data
-#define DECL_ERROR(%1)	if (!results) { LogError(#%1 ... ": %s", error); return; }
+#define DECL_ERROR(%1)	if (!results) { LogError(#%1 ... ": %s", error); return 0; }
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
 	bLate = late;
+	return APLRes_Success;
 }
 
 public void OnPluginStart()
@@ -52,8 +53,8 @@ public void OnLibraryAdded(const char[] name)
 		VSH2_Hook(OnActualBossDeath, fwdOnBossDeath);
 	}
 
-	if (!strcmp(name, "VSH2Ach", false))
-		bAch = true;
+// 	if (!strcmp(name, "VSH2Ach", false))
+// 		bAch = true;
 }
 
 public void fwdOnRoundEndInfo(const VSH2Player player, bool won, char message[512])
@@ -66,8 +67,8 @@ public void fwdOnRoundEndInfo(const VSH2Player player, bool won, char message[51
 		if (++iStreaks[player.index] >= 3)
 			Format(message, sizeof(message), "%s %d win streak!", message, iStreaks[player.index]);
 
-		if (bAch && iStreaks[player.index] >= 20)
-			VSH2Ach_AddTo(player.index, A_ProStreak, 1);
+// 		if (bAch && iStreaks[player.index] >= 20)
+// 			VSH2Ach_AddTo(player.index, A_ProStreak, 1);
 	}
 
 	if (iStreaks[player.index] > iBestStreak[player.index])
@@ -146,6 +147,7 @@ public void OnClientDisconnect(int client)
 public int DBCB_Query(DBPARAMS)
 {
 	DECL_ERROR(DBCB_Query)
+	return 0;
 }
 
 public int DBCB_Connect(Database db, const char[] error, any data)
@@ -153,7 +155,7 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 	if (!db)
 	{
 		LogError("DBCB_Connect: %s", error);
-		return;
+		return 0;
 	}
 
 	delete hTheDB;
@@ -174,11 +176,13 @@ public int DBCB_Connect(Database db, const char[] error, any data)
 			OnClientAuthorized(i, "");
 	}
 	bLate = false;
+	return 0;
 }
 
 public int DBCB_Create(DBPARAMS)
 {
 	DECL_ERROR(DBCB_Create)
+	return 0;
 }
 
 public int CCB_Connect(DBPARAMS)
@@ -187,7 +191,7 @@ public int CCB_Connect(DBPARAMS)
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	bRegistered[client] = true;
 
@@ -202,21 +206,25 @@ public int CCB_Connect(DBPARAMS)
 		iStreaks[client] = results.FetchInt(2);
 		iBestStreak[client] = results.FetchInt(3);
 	}
+	return 0;
 }
 
 public int CCB_Induct(DBPARAMS)
 {
 	DECL_ERROR(CCB_Induct)
+	return 0;
 }
 
 public int CCB_Disconnect(DBPARAMS)
 {
 	DECL_ERROR(CCB_Disconnect)
+	return 0;
 }
 
 public int CCB_Died(DBPARAMS)
 {
 	DECL_ERROR(CCB_Died)
+	return 0;
 }
 
 public Action MostStreaks(int client, int args)
@@ -242,6 +250,7 @@ public int StreakMenu(Menu menu, MenuAction action, int client, int select)
 		}
 		case MenuAction_End:delete menu;
 	}
+	return 0;
 }
 
 public int CCB_Most(DBPARAMS)
@@ -250,9 +259,9 @@ public int CCB_Most(DBPARAMS)
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 	if (!results.RowCount)
-		return;
+		return 0;
 
 	Menu menu = new Menu(DelMenu);
 	menu.SetTitle("VSH2 Best Current Streaks");
@@ -272,6 +281,7 @@ public int CCB_Most(DBPARAMS)
 
 	menu.ExitBackButton = true;
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int CCB_Best(DBPARAMS)
@@ -280,14 +290,14 @@ public int CCB_Best(DBPARAMS)
 
 	int client = GetClientOfUserId(data);
 	if (!client)
-		return;
+		return 0;
 
 	Menu menu = new Menu(DelMenu);
 	menu.SetTitle("VSH2 Best Streaks");
 	int streak;
 	char name[64];
 	if (!results.RowCount)
-		return;
+		return 0;
 
 	while (results.FetchRow())
 	{
@@ -302,6 +312,7 @@ public int CCB_Best(DBPARAMS)
 
 	menu.ExitBackButton = true;
 	menu.Display(client, 0);
+	return 0;
 }
 
 public int DelMenu(Menu menu, MenuAction action, int client, int select)
@@ -315,4 +326,5 @@ public int DelMenu(Menu menu, MenuAction action, int client, int select)
 	}
 	else if (action == MenuAction_End)
 		delete menu;
+	return 0;
 }

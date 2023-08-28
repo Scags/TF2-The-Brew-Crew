@@ -74,6 +74,7 @@ public Action OnRoundEnd(Event event, const char[] name, bool dontBroadcast)
 {
 	if (bReverseThings)
 		bReverseThings = false;
+	return Plugin_Continue;
 }
 
 public void OnSpawn(Event event, const char[] name, bool dontBroadcast)
@@ -160,7 +161,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {

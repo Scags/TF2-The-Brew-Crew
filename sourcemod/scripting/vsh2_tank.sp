@@ -282,7 +282,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -606,6 +606,7 @@ public Action fwdOnBossDealDamage(const VSH2Player victim, int & attacker, int &
 		}
 		TF2_AddCondition(victim.index, TFCond_LostFooting, 1.5, attacker);
 	}
+	return Plugin_Continue;
 }
 public Action RunCmd(VSH2Player base, int &buttons, float angles[3], float vel[3])
 {
@@ -759,9 +760,9 @@ public void HookRocket(const int rocket)
 		SDKHook(nuke, SDKHook_StartTouch, OnRocketTouch);
 		char buffer[64];
 		Format(buffer, sizeof(buffer), "critical_rocket_%s", GetEntProp(rocket, Prop_Send, "m_iTeamNum") == BLU ? "blue" : "red");
-		AttachParticle(nuke, buffer, 0.0, true, false);
+		AttachParticle(nuke, buffer, 0.0, true);
 		StrCat(buffer, sizeof(buffer), "sparks");
-		AttachParticle(nuke, buffer, 0.0, true, false);
+		AttachParticle(nuke, buffer, 0.0, true);
 	}
 }
 
@@ -880,6 +881,7 @@ public Action DeleteParticles(Handle timer, any particle)
 		if (StrEqual(classname, "info_particle_system", false))
 			AcceptEntityInput(ent, "kill");
 	}
+	return Plugin_Continue;
 }
 public void fwdOnSetBossArgs(const char[] bossname, int &type, char[] buffer)
 {

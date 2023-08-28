@@ -1547,7 +1547,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, const String:strEventName[], bool
 				if(GetEngineTime() - g_flDiedToxic[iVictim] <= 0.1) // 0.02246
 				{			
 					new iDamageBits = GetEventInt(hEvent, "damagebits");
-					SetEventInt(hEvent, "damagebits",  iDamageBits |= DMG_CRIT);
+					SetEventInt(hEvent, "damagebits",  iDamageBits | DMG_CRIT);
 					SetEventString(hEvent, "weapon_logclassname", "rtd_toxic");
 					SetEventString(hEvent, "weapon", "tf_pumpkin_bomb");
 					SetEventInt(hEvent, "customkill", TF_CUSTOM_PUMPKIN_BOMB);
@@ -1566,7 +1566,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, const String:strEventName[], bool
 				if(GetEngineTime() - g_flDiedTimebomb[iVictim] <= 0.1) // 0.02246
 				{
 					new iDamageBits = GetEventInt(hEvent, "damagebits");
-					SetEventInt(hEvent, "damagebits",  iDamageBits |= DMG_CRIT);
+					SetEventInt(hEvent, "damagebits",  iDamageBits | DMG_CRIT);
 					SetEventString(hEvent, "weapon_logclassname", "rtd_timebomb");
 					SetEventString(hEvent, "weapon", "taunt_soldier");
 					SetEventInt(hEvent, "customkill", TF_CUSTOM_TAUNT_GRENADE);
@@ -1581,7 +1581,7 @@ public Action:Event_PlayerDeath(Handle:hEvent, const String:strEventName[], bool
 				if(GetEngineTime() - g_flDiedInstant[iVictim] <= 0.1) // 0.02246
 				{
 					new iDamageBits = GetEventInt(hEvent, "damagebits");
-					SetEventInt(hEvent, "damagebits",  iDamageBits |= DMG_CRIT);
+					SetEventInt(hEvent, "damagebits",  iDamageBits | DMG_CRIT);
 					SetEventString(hEvent, "weapon_logclassname", "rtd_instant_kills");
 					SetEventString(hEvent, "weapon", "purgatory");
 					SetEventInt(hEvent, "customkill", 0);
@@ -2171,7 +2171,7 @@ public Action:Timer_Beacon(Handle:hTimer, any:client)
 {
 	if(client >= 1 && client <= MaxClients && IsClientInGame(client) && g_nPlayerData[client].g_nPlayerState == STATE_ROLLING && g_nPlayerData[client].g_nPlayerPerk == PERK_BEACON)
 	{
-		new iTeam = GetClientTeam(iTeam);
+		new iTeam = GetClientTeam(client);
 		
 		new Float:flPos[3];
 		GetClientAbsOrigin(client, flPos);

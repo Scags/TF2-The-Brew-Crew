@@ -29,6 +29,7 @@ public Action SpecTimer(Handle timer)
 		if (IsClientInGame(i) && !IsPlayerAlive(i) && GetClientTeam(i) <= 1)
 			if (++iSpecTime[i] > 600 && !bIsAdmin[i])
 				KickClient(i, "You have been kicked due to inactivity.");
+	return Plugin_Continue;
 }
 
 public void OnClientConnected(int client)

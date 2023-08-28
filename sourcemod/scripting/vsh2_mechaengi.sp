@@ -220,7 +220,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -636,13 +636,14 @@ public Action Timer_RemoveRagdoll(Handle timer, any uid)
 {
 	int client = GetClientOfUserId(uid);
 	if (!client)
-		return;
+		return Plugin_Continue;
 
 	int ragdoll = GetEntPropEnt(client, Prop_Send, "m_hRagdoll");
 	if (!IsValidEntity(ragdoll) || ragdoll <= MaxClients)
-		return;
+		return Plugin_Continue;
 
 	AcceptEntityInput(ragdoll, "Kill");
+	return Plugin_Continue;
 }
 
 public Action OnTaunt(int client, const char[] command, int args)

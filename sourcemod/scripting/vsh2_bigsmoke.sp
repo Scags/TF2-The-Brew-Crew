@@ -123,7 +123,7 @@ public void fwdBossSelected(const VSH2Player Player)
 }
 public int PANEL(Menu menu, MenuAction action, int client, int select)
 {
-	return;
+	return 0;
 }
 public void fwdOnBossThink(const VSH2Player Player)
 {
@@ -515,6 +515,7 @@ public Action ForceFix(Handle timer, DataPack pack)
 	VSH2Player player = pack.ReadCell();
 	if (player.index)
 		player.hSpecial = null;
+	return Plugin_Continue;
 }
 
 public bool TrainTrace(int ent, int data)
